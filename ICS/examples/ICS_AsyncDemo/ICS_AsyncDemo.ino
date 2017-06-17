@@ -9,7 +9,7 @@ IcsServo servo2;
 
 void setup() {
   
-  // Serial.begin(9600); // GR-CITRUS, for console monitor
+  // Serial.begin(115200); // GR-CITRUS, for console monitor
   
   ICS.begin();
   servo1.attach(ICS, 0x00);
@@ -31,6 +31,7 @@ void loop() {
     
     while(!ICS.isReady())
     {
+        ICS.loop();
         ; // Do any other process while communicating!
     }
     
@@ -50,6 +51,7 @@ void loop() {
     
     while(!ICS.isReady())
     {
+        ICS.loop();
         ; // Do any other process while communicating!
     }
     

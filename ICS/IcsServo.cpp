@@ -441,6 +441,7 @@ bool IcsServo::transfer(uint8_t* tx_data, int tx_size, uint8_t* rx_data, int rx_
             retval = false;
             break;
         }
+        delayMicroseconds(1);
     }
     return retval;
 }
@@ -651,5 +652,6 @@ void IcsServo::receiveAsync()
     if(controller->isTimeout()){
         setError(ERROR_TIMEOUT); // Error
     }
+    delayMicroseconds(1);
 }
 
