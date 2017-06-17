@@ -43,11 +43,11 @@ void loop() {
     // Serial.print(position1); Serial.print("\t");
     // Serial.print(position2); Serial.print("\n");
     
-    delay(100);
+    delay(20);
   }
   for(int position=-4000; position<=4000; position+=100){
-    servo1.requestPosition(7500+position);
-    servo2.requestPosition(7500-position);
+    servo1.requestPosition(7500-position);
+    servo2.requestPosition(7500+position);
     
     while(!ICS.isReady())
     {
@@ -60,6 +60,6 @@ void loop() {
     // Serial.print(position1); Serial.print("\t");
     // Serial.print(position2); Serial.print("\n");
     
-    delay(100);
+    delay(20);
   }
 }

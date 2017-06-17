@@ -34,7 +34,7 @@ void loop() {
     // Serial.print(position1); Serial.print("\t");
     // Serial.print(position2); Serial.print("\n");
     
-    delay(100);
+    delay(20);
   }
   for(int position=-4000; position<=4000; position+=100){
     position1 = servo1.setPosition(7500-position);
@@ -45,6 +45,6 @@ void loop() {
     // Serial.print(position1); Serial.print("\t");
     // Serial.print(position2); Serial.print("\n");
     
-    delay(100);
+    delay(20);
   }
 }
