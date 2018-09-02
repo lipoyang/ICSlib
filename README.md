@@ -27,7 +27,7 @@ ICSlib for Arduino
 * 5Vトレラントのポートが無いなら、適宜レベル変換をおこなってください。
 
 ## インストール
-ICSフォルダをArduinoのライブラリフォルダの下にコピーします。
+ICSlibフォルダをArduinoのライブラリフォルダの下にコピーします。
 * Windows7 では %USERPROFILE%\My Documents\Arduino\libraries です。
 * Windows10 では %USERPROFILE%\Documents\Arduino\libraries です。
 
