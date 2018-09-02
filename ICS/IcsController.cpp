@@ -26,6 +26,9 @@ void IcsController::begin()
 {
     // 115200 baud, data 8bit, parity even, stop 1bit
     serial->begin(115200, SERIAL_8E1);
+#ifdef GRROSE
+    serial->direction(HALFDUPLEX);
+#endif
 }
 
 // call this in main loop (for Asynchronous API)
