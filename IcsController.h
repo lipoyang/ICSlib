@@ -3,7 +3,6 @@
 
 // KONDO ICS Serial Servo Controller
 // Based on ICS3.5
-// Baudrate = 115200 only
 
 #include <stdint.h>
 #include <Arduino.h>
@@ -19,7 +18,7 @@ class IcsController
 public:
     // API
     IcsController(HardwareSerial& serial);
-    void begin();   // start ICS controller
+    void begin(int baud=115200); // start ICS controller
     void loop();    // call this in main loop (for Asynchronous API)
     bool isReady(); // requested communication completed? (for Asynchronous API)
     

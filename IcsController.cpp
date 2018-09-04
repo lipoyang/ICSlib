@@ -22,10 +22,10 @@ IcsController::IcsController(HardwareSerial& serial)
 }
 
 // start ICS controller
-void IcsController::begin()
+void IcsController::begin(int baud)
 {
-    // 115200 baud, data 8bit, parity even, stop 1bit
-    serial->begin(115200, SERIAL_8E1);
+    // data 8bit, parity even, stop 1bit
+    serial->begin(baud, SERIAL_8E1);
 #ifdef GRROSE
     serial->direction(HALFDUPLEX);
 #endif
