@@ -3,6 +3,7 @@
 // Baudrate = 115200 only
 
 #include <stdio.h>
+#include <string.h>
 #include "IcsController.h"
 #include "IcsServo.h"
 
@@ -26,6 +27,8 @@
 #define SC_SPEED        0x02    // speed
 #define SC_CURRENT      0x03    // current
 #define SC_TEMPERATURE  0x04    // temperature
+#define SC_POSITION     0x05    // position (read only)
+
 // SC(sub command) of ID command
 #define SC_READ_ID      0x00    // read ID
 #define SC_WRITE_ID     0x01    // write ID
@@ -179,6 +182,34 @@ uint8_t IcsServo::getTemperature()
 {
     return this->getParameter(SC_TEMPERATURE);
 }
+
+// get position
+uint16_t IcsServo::getPosition()
+{
+    // command data
+    uint8_t tx_data[2];
+    tx_data[0] = CMD_READ | (ID & ID_MASK); // CMD
+    tx_data[1] = SC_POSITION;  // SC
+    
+    // send command and receive response
+    uint8_t rx_data[2+4]={0};
+    if(!this->transfer(tx_data, sizeof(tx_data), rx_data, sizeof(rx_data), 1)){
+        return 0xFF;  // Error
+    }
+    
+    // verify response data
+    uint16_t retval;
+    if(   ICS_CMD_CHECK(rx_data, tx_data, 2) // verify CMD
+       && ICS_SC_CHECK (rx_data, tx_data, 2)) // verify SC
+    {
+        // value of parameter
+        retval = ((uint16_t)rx_data[3+1] << 7) | (uint16_t)rx_data[3+2];
+    }else{
+        retval = 0xFFFF; // Error
+    }
+    return retval;
+}
+
 
 // write parameter (common routine)
 // sc : sub command (type of parameter)
@@ -353,7 +384,7 @@ bool IcsServo::writeID(uint8_t id)
     }
     
     // verify response data
-    uint8_t retval;
+    bool retval;
     if(ICS_CMD_CHECK(rx_data, tx_data, 4)) // verify CMD
     {
         retval = true;

@@ -31,6 +31,7 @@ public:
     uint8_t getSpeed();                     // get speed
     uint8_t getCurrent();                   // get current
     uint8_t getTemperature();               // get temperature
+    uint16_t getPosition();                 // get position
     bool setStretch(uint8_t stretch);       // set stretch
     bool setSpeed(uint8_t speed);           // set speed
     bool setCurrent(uint8_t current);       // set current limit

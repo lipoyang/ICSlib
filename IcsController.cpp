@@ -2,6 +2,7 @@
 // Based on ICS3.5
 // Baudrate = 115200 only
 
+#include <Arduino.h>
 #include "IcsController.h"
 #include "IcsServo.h"
 
