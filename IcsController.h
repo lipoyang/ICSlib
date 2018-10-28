@@ -38,6 +38,11 @@ private:
     IcsServo *servoNow;     // now communicating servo (for communication scheduling)
     uint32_t T1;            // for timeout (start time)
     uint32_t T2;            // for timeout (limit time)
+    
+    // ICS servo needs 400usec wait after communication
+    bool toWait;            // wait flag
+    uint32_t T1_wait;       // start time of wait
+    bool busyPrev;          // previous busy flag
 };
 
 #endif

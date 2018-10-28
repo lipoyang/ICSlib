@@ -3,9 +3,12 @@
 
 // KONDO ICS Serial Servo
 // Based on ICS3.5
-// Baudrate = 115200 only
 
 #include <stdint.h>
+
+// buffer size
+#define ICS_TX_BUFF_SIZE  3
+#define ICS_RX_BUFF_SIZE  3
 
 // Error Code
 #define ERROR_TIMEOUT           0x01    // timeout
@@ -71,12 +74,12 @@ private:
     uint8_t  ID;                // ICS servo ID
     
     // for Asynchronous API
-    uint8_t  request;           // request flags
-    static uint8_t commandNow;  // current command
-    static uint8_t txData[];    // send buffer
-    static uint8_t rxData[];    // receive buffer
-    static int   rxCnt;         // receive count
-    static bool  isReceiving;   // receiving flag
+    uint8_t request;                  // request flags
+    uint8_t commandNow;               // current command
+    uint8_t txData[ICS_TX_BUFF_SIZE]; // send buffer
+    uint8_t rxData[ICS_RX_BUFF_SIZE]; // receive buffer
+    int     rxCnt;                    // receive count
+    bool    isReceiving;              // receiving flag
 };
 
 #endif

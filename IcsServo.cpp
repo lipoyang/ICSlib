@@ -1,6 +1,5 @@
 // KONDO ICS Serial Servo
 // Based on ICS3.5
-// Baudrate = 115200 only
 
 #include <stdio.h>
 #include <string.h>
@@ -57,19 +56,6 @@
 #define REQ_POSITION       0x01    // set & get position
 #define REQ_CURRENT        0x02    // get current
 #define REQ_TEMPERATURE    0x04    // get temperature
-
-// buffer size
-#define ICS_TX_BUFF_SIZE  3
-#define ICS_RX_BUFF_SIZE  3
-
-/****************************************
- Static Variables
- ****************************************/
-uint8_t IcsServo::commandNow;                // current command
-uint8_t IcsServo::txData[ICS_TX_BUFF_SIZE];  // send buffer
-uint8_t IcsServo::rxData[ICS_RX_BUFF_SIZE];  // receive buffer
-int   IcsServo::rxCnt;                       // receive count
-bool  IcsServo::isReceiving;                 // receiving flag
 
 /****************************************
  Common API
@@ -477,6 +463,11 @@ bool IcsServo::transfer(uint8_t* tx_data, int tx_size, uint8_t* rx_data, int rx_
     return retval;
 }
 
+#if 0
+extern IcsController ics1;
+extern IcsController ics2;
+#endif
+
 // asynchronous send
 void IcsServo::sendAsync()
 {
@@ -520,6 +511,13 @@ void IcsServo::sendAsync()
     if(tx_size != 0)
     {
         controller->write(txData, tx_size);
+#if 0
+        if(controller == &ics1){
+            Serial.print("s");
+        }else{
+            Serial.print("S");
+        }
+#endif
         this->isReceiving = true;
         rxCnt = 0;
         
@@ -586,6 +584,13 @@ void IcsServo::receivePositionAsync()
             // current position
             position = ((uint16_t)rxData[0] << 7) | (uint16_t)rxData[1];
             isReceiving = false;
+#if 0
+            if(controller == &ics1){
+                Serial.print("r");
+            }else{
+                Serial.print("R");
+            }
+#endif
             return; // success
         // abnormal state
         default:
@@ -681,6 +686,13 @@ void IcsServo::receiveAsync()
     }
     // check time limit
     if(controller->isTimeout()){
+#if 0
+        if(controller == &ics1){
+            Serial.print("e");
+        }else{
+            Serial.print("E");
+        }
+#endif
         setError(ERROR_TIMEOUT); // Error
     }
     delayMicroseconds(1);
