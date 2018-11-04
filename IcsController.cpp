@@ -6,7 +6,7 @@
 #include "IcsServo.h"
 
 // ICS servo needs 400usec wait after communication
-#define SERVO_WAIT 400
+#define SERVO_WAIT 1000
 
 /****************************************
  API
@@ -37,30 +37,20 @@ void IcsController::begin(int baud)
 #endif
 }
 
-#if 0
-extern IcsController ics1;
-extern IcsController ics2;
-#endif
-
 // call this in main loop (for Asynchronous API)
 void IcsController::loop()
 {
-#if 0
-    // ICS servo needs 400usec wait after communication
+    // ICS servo needs wait after communication
     if(toWait){
         uint32_t now = micros();
         uint32_t elapsed = now - T1_wait;
-        if(elapsed > SERVO_WAIT){
+        if((elapsed > SERVO_WAIT)
+           && (elapsed < UINT32_MAX/2)) // for GR-ROSE(beta)'s bug
+        { 
             toWait = false;
-            if(this == &ics1){
-    			Serial.print("f");
-            }else{
-    			Serial.print("F");
-            }
         }
     }
     if(toWait) return;
-#endif
     
     // if no servo, do nothing
     if(servoNow == NULL) return;
@@ -69,19 +59,6 @@ void IcsController::loop()
     if(servoNow->isReceiving)
     {
         servoNow->receiveAsync();
-    
-#if 0  
-        // ICS servo needs 400usec wait after communication
-        if(!servoNow->isReceiving){
-            if(this == &ics1){
-                Serial.print("w");
-            }else{
-                Serial.print("W");
-            }
-	        toWait = true;
-	        T1_wait = micros();
-		}
-#endif
     }
     // send command
     else
@@ -90,6 +67,10 @@ void IcsController::loop()
         if(servoNow->request)
         {
             servoNow->sendAsync();
+            
+            // ICS servo needs wait after communication
+            toWait = true;
+            T1_wait = micros();
         }
         // select next servo
         else
@@ -152,20 +133,19 @@ void IcsController::setTimeout(int msec)
 {
     uint32_t cnt = (uint32_t)(msec * 1000);
     T1 = micros();
-    T2 = T1 + cnt;
+    T2 = cnt;
 }
 
 // is timeout?
 bool IcsController::isTimeout()
 {
-    uint32_t t = micros();
-
-    bool timeup = (
-        ((T1 < T2) && (T2 <= t)) ||
-        ((t  < T1) && (T1 < T2)) ||
-        ((T2 <= t) && (t  < T1))
-    );
+    uint32_t now = micros();
+    uint32_t elapsed = now - T1;
     
+    bool timeup = (
+        (elapsed > T2)
+        && (elapsed < UINT32_MAX/2) // for GR-ROSE(beta)'s bug
+    );
     return timeup;
 }
 
