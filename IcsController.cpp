@@ -5,9 +5,6 @@
 #include "IcsController.h"
 #include "IcsServo.h"
 
-// ICS servo needs 400usec wait after communication
-#define SERVO_WAIT 1000
-
 /****************************************
  API
  ****************************************/
@@ -23,13 +20,15 @@ IcsController::IcsController(HardwareSerial& serial)
     servoLast  = NULL;
     servoNow   = NULL;
     
-    toWait = false;
-    busyPrev = false;
+    waiting = false;
 }
 
 // start ICS controller
 void IcsController::begin(int baud)
 {
+    // ICS servo needs wait after communication
+    T4 = 6*11*1000000 / baud + 400;
+    
     // data 8bit, parity even, stop 1bit
     serial->begin(baud, SERIAL_8E1);
 #ifdef GRROSE
@@ -41,16 +40,16 @@ void IcsController::begin(int baud)
 void IcsController::loop()
 {
     // ICS servo needs wait after communication
-    if(toWait){
+    if(waiting){
         uint32_t now = micros();
-        uint32_t elapsed = now - T1_wait;
-        if((elapsed > SERVO_WAIT)
+        uint32_t elapsed = now - T3;
+        if((elapsed > T4)
            && (elapsed < UINT32_MAX/2)) // for GR-ROSE(beta)'s bug
         { 
-            toWait = false;
+            waiting = false;
         }
     }
-    if(toWait) return;
+    if(waiting) return;
     
     // if no servo, do nothing
     if(servoNow == NULL) return;
@@ -69,8 +68,8 @@ void IcsController::loop()
             servoNow->sendAsync();
             
             // ICS servo needs wait after communication
-            toWait = true;
-            T1_wait = micros();
+            waiting = true;
+            T3 = micros();
         }
         // select next servo
         else

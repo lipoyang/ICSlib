@@ -40,9 +40,9 @@ private:
     uint32_t T2;            // for timeout (limit time)
     
     // ICS servo needs wait after communication
-    bool toWait;            // wait flag
-    uint32_t T1_wait;       // start time of wait
-    bool busyPrev;          // previous busy flag
+    bool waiting;           // wait flag
+    uint32_t T3;            // start time of wait
+    uint32_t T4;            // time to wait
 };
 
 #endif
