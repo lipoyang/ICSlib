@@ -26,7 +26,7 @@ class IcsServo
     
 public:
     // Common API
-    void attach(IcsController& controller, uint8_t id); // set ICS controller and servo ID
+    void attach(IcsController& controller, uint8_t id, uint8_t icsver = 36); // set ICS controller and servo ID
     
     // Synchronous API
     uint16_t setPosition(uint16_t pos);     // set & get position
@@ -51,6 +51,9 @@ public:
     void requestTemperature();              // request to get temperature
     bool isReady();                         // requested communication completed?
     
+    // ICS protocol version (used for getting position)
+    void setProtcolVersion(uint8_t version);
+
 public:
     uint16_t posTarget;         // target position (14bit raw value)
     uint16_t position;          // current position (14bit raw value)
@@ -80,6 +83,8 @@ private:
     uint8_t rxData[ICS_RX_BUFF_SIZE]; // receive buffer
     int     rxCnt;                    // receive count
     bool    isReceiving;              // receiving flag
+
+    uint8_t icsver;
 };
 
 #endif

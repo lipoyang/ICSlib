@@ -62,10 +62,11 @@
  ****************************************/
 
 // set ICS controller and servo ID
-void IcsServo::attach(IcsController& controller, uint8_t id)
+void IcsServo::attach(IcsController& controller, uint8_t id, uint8_t icsver)
 {
     this->controller = &controller;
     this->ID = id;
+    this->icsver = icsver;
     
     // add this servo to servo chain
     if(controller.servoFirst == NULL)
@@ -172,6 +173,7 @@ uint8_t IcsServo::getTemperature()
 // get position
 uint16_t IcsServo::getPosition()
 {
+	if(icsver >= 36) {
     // command data
     uint8_t tx_data[2];
     tx_data[0] = CMD_READ | (ID & ID_MASK); // CMD
@@ -194,6 +196,12 @@ uint16_t IcsServo::getPosition()
         retval = 0xFFFF; // Error
     }
     return retval;
+
+	} else {
+		uint16_t retval = setPosition(0);
+		setPosition(retval);
+	    return retval;
+	}
 }
 
 
@@ -698,3 +706,7 @@ void IcsServo::receiveAsync()
     delayMicroseconds(1);
 }
 
+// ICS protocol version (used for getting position)
+void IcsServo::setProtcolVersion(uint8_t version){
+	icsver = version;
+}
