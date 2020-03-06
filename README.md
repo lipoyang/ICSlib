@@ -3,19 +3,19 @@ ICSlib for Arduino
 
 ## 概要
 近藤科学のシリアルサーボ規格 ICS に対応したArduino用ライブラリです。
-* [近藤科学の公式ライブラリ](http://kondo-robot.com/faq/ics-library-a)とは別物です。
-* こちらはまだまだベータ版です。うかうかしてる間に公式が先に公開されてしまいました。(言い訳)
+* [近藤科学の公式ライブラリ](https://kondo-robot.com/faq/ics-library-a2)とは別物です。
+* うかうかしてる間に公式が先に公開されてしまいました。(言い訳)
 * 非同期(ノンブロッキング)なAPIをサポートしているのが特長です。
 
 ## 対応規格
-近藤科学 ICS 3.5準拠
-* ただし、通信速度は115200bpsのみ対応。
+近藤科学 ICS 3.6準拠
 * ICSの詳細について近藤科学のWEBサイトを参照してください。
 
 ## 対応ボード
-115200bpsのシリアル通信が可能なArduinoおよび互換ボード
-* Arduino UNO および GR-CITRUSで動作確認済み。
+115200bps以上のシリアル通信が可能なArduinoおよび互換ボード
+* Arduino UNO および GR-CITRUS, GR-ROSEで動作確認済み。
 * 3.3V版Arduino Pro Mini などは115200bpsが使用できないので不可。
+* GR-ROSEでは625kbpsおよび1.25Mbpsにも対応。
 * HardwareSerialクラスおよびmicros()関数に依存。
 
 ## 接続
