@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map ICS
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ICS	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+attach	KEYWORD2
+setPosition	KEYWORD2
+getStretch	KEYWORD2
+getSpeed	KEYWORD2
+getCurrent	KEYWORD2
+getTemperature	KEYWORD2
+getPosition	KEYWORD2
+setStretch	KEYWORD2
+setSpeed	KEYWORD2
+setCurrent	KEYWORD2
+setTemperature	KEYWORD2
+attachAlarmHandler	KEYWORD2
+readEEPROM	KEYWORD2
+writeEEPROM	KEYWORD2
+readID	KEYWORD2
+writeID	KEYWORD2
+requestPosition	KEYWORD2
+requestCurrent	KEYWORD2
+requestTemperature	KEYWORD2
+isReady	KEYWORD2
+setProtcolVersion	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
