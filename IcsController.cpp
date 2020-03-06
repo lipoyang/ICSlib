@@ -43,8 +43,7 @@ void IcsController::loop()
     if(waiting){
         uint32_t now = micros();
         uint32_t elapsed = now - T3;
-        if((elapsed > T4)
-           && (elapsed < UINT32_MAX/2)) // for GR-ROSE(beta)'s bug
+        if(elapsed > T4)
         { 
             waiting = false;
         }
@@ -143,7 +142,6 @@ bool IcsController::isTimeout()
     
     bool timeup = (
         (elapsed > T2)
-        && (elapsed < UINT32_MAX/2) // for GR-ROSE(beta)'s bug
     );
     return timeup;
 }
